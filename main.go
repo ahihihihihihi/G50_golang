@@ -17,6 +17,15 @@ func (Restaurant) TableName() string {
 	return "restaurants"
 }
 
+type RestaurantUpdate struct {
+	Name *string `json:"name" gorm:"column:name;"`
+	Addr *string `json:"addr" gorm:"column:addr;"`
+}
+
+func (RestaurantUpdate) TableName() string {
+	return Restaurant{}.TableName()
+}
+
 //go get gorm.io/gorm@v1.20.11
 //go get gorm.io/driver/mysql@v1.0.3
 
@@ -43,6 +52,34 @@ func main() {
 	}
 
 	log.Println("New ID Created: ", newRestaurant.Id)
+
+	var myRestaurant Restaurant
+
+	if err := db.Where("id = ?", 2).First(&myRestaurant).Error; err != nil {
+		log.Println(err)
+	}
+
+	log.Println(myRestaurant)
+
+	//myRestaurant.Name = "500lab"
+
+	//if err := db.Where("id = ?", 2).Updates(&myRestaurant).Error; err != nil {
+	//	log.Println(err)
+	//}
+	//
+	//log.Println(myRestaurant)
+
+	update := "500lab"
+	updateData := RestaurantUpdate{Name: &update}
+	if err := db.Where("id = ?", 2).Updates(&updateData).Error; err != nil {
+		log.Println(err)
+	}
+
+	log.Println(*updateData.Name)
+
+	if err := db.Table(Restaurant{}.TableName()).Where("id = ?", 5).Delete(nil).Error; err != nil {
+		log.Println(err)
+	}
 
 }
 
