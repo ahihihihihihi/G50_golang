@@ -1,33 +1,18 @@
 package main
 
 import (
+	"G05-food-delivery/component/appctx"
+	"G05-food-delivery/module/restaurant/transport/ginrestaurant"
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"log"
 	"net/http"
 	"os"
-	"strconv"
+	//"strconv"
 )
 
-type Restaurant struct {
-	Id   int    `json:"id" gorm:"column:id;"`
-	Name string `json:"name" gorm:"column:name;"`
-	Addr string `json:"addr" gorm:"column:addr;"`
-}
 
-func (Restaurant) TableName() string {
-	return "restaurants"
-}
-
-type RestaurantUpdate struct {
-	Name *string `json:"name" gorm:"column:name;"`
-	Addr *string `json:"addr" gorm:"column:addr;"`
-}
-
-func (RestaurantUpdate) TableName() string {
-	return Restaurant{}.TableName()
-}
 
 //go get gorm.io/gorm@v1.20.11
 //go get gorm.io/driver/mysql@v1.0.3
@@ -51,159 +36,77 @@ func main() {
 		})
 	})
 
+	appContext := appctx.NewAppContext(db)
+
 	v1 := r.Group("/v1")
 
 	restaurant := v1.Group("/restaurants")
 
-	restaurant.POST("", func(c *gin.Context) {
-		var data Restaurant
+	restaurant.POST("", ginrestaurant.CreateRestaurant(appContext))
 
-		if err := c.ShouldBindJSON(&data); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"err": err.Error(),
-			})
+	//restaurant.GET("/:id", func(c *gin.Context) {
+	//	id, err := strconv.Atoi(c.Param("id"))
+	//
+	//	if err != nil {
+	//		c.JSON(http.StatusBadRequest, gin.H{
+	//			"err": err.Error(),
+	//		})
+	//
+	//		return
+	//	}
+	//
+	//	var data Restaurant
+	//
+	//	if err := db.Where("id = ?", id).First(&data).Error; err != nil {
+	//		c.JSON(http.StatusInternalServerError, gin.H{
+	//			"err": err.Error(),
+	//		})
+	//
+	//		return
+	//	}
+	//
+	//	c.JSON(http.StatusOK, gin.H{
+	//		"data": data,
+	//	})
+	//})
+	//
+	restaurant.GET("", ginrestaurant.ListRestaurant(appContext))
 
-			return
-		}
-
-		if err := db.Create(&data).Error; err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{
-				"err": err.Error(),
-			})
-
-			return
-		}
-
-		c.JSON(http.StatusOK, gin.H{
-			"data": data,
-		})
-	})
-
-	restaurant.GET("/:id", func(c *gin.Context) {
-		id, err := strconv.Atoi(c.Param("id"))
-
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"err": err.Error(),
-			})
-
-			return
-		}
-
-		var data Restaurant
-
-		if err := db.Where("id = ?", id).First(&data).Error; err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{
-				"err": err.Error(),
-			})
-
-			return
-		}
-
-		c.JSON(http.StatusOK, gin.H{
-			"data": data,
-		})
-	})
-
-	restaurant.GET("", func(c *gin.Context) {
-
-		var data []Restaurant
-
-		type Paging struct {
-			Page int `json:"page" form:"page"`
-			Limit int `json:"limit" form:"limit"`
-		}
-
-		var pagingData Paging
-
-		if err := c.ShouldBind(&pagingData); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"err": err.Error(),
-			})
-
-			return
-		}
-
-		if pagingData.Page <= 0 {
-			pagingData.Page = 1
-		}
-		if pagingData.Limit <= 0 {
-			pagingData.Limit = 5
-		}
-
-		if err := db.
-			Offset((pagingData.Page - 1) * pagingData.Limit).
-			Order("id desc").Limit(pagingData.Limit).
-			Find(&data).Error; err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{
-				"err": err.Error(),
-			})
-
-			return
-		}
-
-		c.JSON(http.StatusOK, gin.H{
-			"data": data,
-		})
-	})
-
-	restaurant.PATCH("/:id", func(c *gin.Context) {
-		id, err := strconv.Atoi(c.Param("id"))
-
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"err": err.Error(),
-			})
-
-			return
-		}
-
-		var data RestaurantUpdate
-
-		if err := c.ShouldBindJSON(&data); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"err": err.Error(),
-			})
-
-			return
-		}
-
-		if err := db.Where("id = ?", id).Updates(&data).Error; err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{
-				"err": err.Error(),
-			})
-
-			return
-		}
-
-		c.JSON(http.StatusOK, gin.H{
-			"data": true,
-		})
-	})
-
-	restaurant.DELETE("/:id", func(c *gin.Context) {
-		id, err := strconv.Atoi(c.Param("id"))
-
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"err": err.Error(),
-			})
-
-			return
-		}
-
-		if err := db.Table(Restaurant{}.TableName()).Where("id = ?", id).Delete(nil).Error; err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{
-				"err": err.Error(),
-			})
-
-			return
-		}
-
-		c.JSON(http.StatusOK, gin.H{
-			"data": true,
-		})
-	})
+	//restaurant.PATCH("/:id", func(c *gin.Context) {
+	//	id, err := strconv.Atoi(c.Param("id"))
+	//
+	//	if err != nil {
+	//		c.JSON(http.StatusBadRequest, gin.H{
+	//			"err": err.Error(),
+	//		})
+	//
+	//		return
+	//	}
+	//
+	//	var data RestaurantUpdate
+	//
+	//	if err := c.ShouldBindJSON(&data); err != nil {
+	//		c.JSON(http.StatusBadRequest, gin.H{
+	//			"err": err.Error(),
+	//		})
+	//
+	//		return
+	//	}
+	//
+	//	if err := db.Where("id = ?", id).Updates(&data).Error; err != nil {
+	//		c.JSON(http.StatusInternalServerError, gin.H{
+	//			"err": err.Error(),
+	//		})
+	//
+	//		return
+	//	}
+	//
+	//	c.JSON(http.StatusOK, gin.H{
+	//		"data": true,
+	//	})
+	//})
+	//
+	restaurant.DELETE("/:id", ginrestaurant.DeleteRestaurant(appContext))
 
 	r.Run()
 
