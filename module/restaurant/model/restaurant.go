@@ -1,16 +1,39 @@
 package restaurantmodel
 
+import (
+	"G05-food-delivery/common"
+	"errors"
+	"strings"
+)
+
+type RestaurantType string
+
+const (
+	TypeNormal  RestaurantType = "normal"
+	TypePremium RestaurantType = "premium"
+)
+
 type Restaurant struct {
-	Id   int    `json:"id" gorm:"column:id;"`
-	Name string `json:"name" gorm:"column:name;"`
-	Addr string `json:"addr" gorm:"column:addr;"`
-	Status int `json:"status" gorm:"column:status;"`
+	common.SQLModel `json:",inline"`
+	Name            string         `json:"name" gorm:"column:name;"`
+	Addr            string         `json:"addr" gorm:"column:addr;"`
+	Type            RestaurantType `json:"type" gorm:"type"`
 }
 
 type RestaurantCreate struct {
-	Id   int    `json:"id" gorm:"column:id;"`
-	Name string `json:"name" gorm:"column:name;"`
-	Addr string `json:"addr" gorm:"column:addr;"`
+	common.SQLModel `json:",inline"`
+	Name            string `json:"name" gorm:"column:name;"`
+	Addr            string `json:"addr" gorm:"column:addr;"`
+}
+
+func (data *RestaurantCreate) Validate() error {
+	data.Name = strings.TrimSpace(data.Name)
+
+	if data.Name == "" {
+		return ErrNameIsEmpty
+	}
+
+	return nil
 }
 
 func (RestaurantCreate) TableName() string {
@@ -29,3 +52,7 @@ type RestaurantUpdate struct {
 func (RestaurantUpdate) TableName() string {
 	return Restaurant{}.TableName()
 }
+
+var (
+	ErrNameIsEmpty = errors.New("Name cannot be empty")
+)

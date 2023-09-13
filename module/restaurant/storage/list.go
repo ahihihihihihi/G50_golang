@@ -13,13 +13,20 @@ func (s *sqlStore) ListDataWithCondition(context context.Context,
 ) ([]restaurantmodel.Restaurant, error) {
 	var result []restaurantmodel.Restaurant
 
-	db := s.db.Table(restaurantmodel.Restaurant{}.TableName()).Where("status in (1)")
+	//db := s.db.Table(restaurantmodel.Restaurant{}.TableName()).Where("status in (1)")
+
+	db := s.db.Table(restaurantmodel.Restaurant{}.TableName())
 
 	if f := filter ; f != nil {
 		if f.OwnerId > 0 {
 			db = db.Where("owner_id = ?",f.OwnerId)
 		}
+
+		if len(f.Status) > 0 {
+			db = db.Where("status in (?)",f.Status)
+		}
 	}
+
 
 	if err := db.Count(&paging.Total).Error ; err != nil {
 		return nil, err

@@ -36,6 +36,8 @@ func ListRestaurant(appCtx appctx.Appcontext) gin.HandlerFunc {
 			return
 		}
 
+		filter.Status = []int{1}
+
 		store := restaurantstorage.NewSQLStore(db)
 		biz := restaurantbiz.NewListRestaurantBiz(store)
 
