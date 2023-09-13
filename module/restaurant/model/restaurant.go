@@ -11,6 +11,8 @@ type RestaurantType string
 const (
 	TypeNormal  RestaurantType = "normal"
 	TypePremium RestaurantType = "premium"
+
+	EntityName = "Restaurant"
 )
 
 type Restaurant struct {

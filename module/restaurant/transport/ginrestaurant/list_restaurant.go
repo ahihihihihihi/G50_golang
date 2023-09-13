@@ -10,7 +10,7 @@ import (
 	"net/http"
 )
 
-func ListRestaurant(appCtx appctx.Appcontext) gin.HandlerFunc {
+func ListRestaurant(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		db := appCtx.GetMainDBConnection()
 

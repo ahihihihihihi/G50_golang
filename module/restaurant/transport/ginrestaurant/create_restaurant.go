@@ -6,33 +6,38 @@ import (
 	restaurantbiz "G05-food-delivery/module/restaurant/biz"
 	restaurantmodel "G05-food-delivery/module/restaurant/model"
 	restaurantstorage "G05-food-delivery/module/restaurant/storage"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
-func CreateRestaurant(appCtx appctx.Appcontext) gin.HandlerFunc  {
+func CreateRestaurant(appCtx appctx.AppContext) gin.HandlerFunc  {
 	return func(c *gin.Context) {
 		db := appCtx.GetMainDBConnection()
 
 		var data restaurantmodel.RestaurantCreate
 
-		if err := c.ShouldBindJSON(&data); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"err": err.Error(),
-			})
+		// test middleware
+		//a := []int{}
+		//fmt.Println(a[0])
 
-			return
+		// test AppRecover
+		//go func() {
+		//	defer common.AppRecover()
+		//	a := []int{}
+		//	fmt.Println(a[0])
+		//}()
+
+
+		if err := c.ShouldBindJSON(&data); err != nil {
+			panic(err)
 		}
 
 		store := restaurantstorage.NewSQLStore(db)
 		biz := restaurantbiz.NewCreateRestaurantBiz(store)
 
 		if err := biz.CreateRestaurant(c.Request.Context(),&data) ; err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"err": err.Error(),
-			})
-
-			return
+			panic(err)
 		}
 
 		c.JSON(http.StatusOK, common.SimpleSuccessResponse(data.Id))
