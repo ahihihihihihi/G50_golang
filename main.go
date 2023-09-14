@@ -18,6 +18,7 @@ import (
 //go get gorm.io/gorm@v1.20.11
 //go get gorm.io/driver/mysql@v1.0.3
 //go get -u github.com/gin-gonic/gin@v1.7.1
+//go get -u github.com/btcsuite/btcutil/base58
 
 func main() {
 

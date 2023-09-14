@@ -6,6 +6,7 @@ import (
 	restaurantbiz "G05-food-delivery/module/restaurant/biz"
 	restaurantmodel "G05-food-delivery/module/restaurant/model"
 	restaurantstorage "G05-food-delivery/module/restaurant/storage"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -17,11 +18,7 @@ func ListRestaurant(appCtx appctx.AppContext) gin.HandlerFunc {
 		var pagingData common.Paging
 
 		if err := c.ShouldBind(&pagingData); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"err": err.Error(),
-			})
-
-			return
+			panic(common.ErrInvalidRequest(err))
 		}
 
 		pagingData.Fulfill()
@@ -29,11 +26,7 @@ func ListRestaurant(appCtx appctx.AppContext) gin.HandlerFunc {
 		var filter restaurantmodel.Filter
 
 		if err := c.ShouldBind(&filter); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"err": err.Error(),
-			})
-
-			return
+			panic(common.ErrInvalidRequest(err))
 		}
 
 		filter.Status = []int{1}
@@ -43,11 +36,13 @@ func ListRestaurant(appCtx appctx.AppContext) gin.HandlerFunc {
 
 		result, err := biz.ListRestaurant(c.Request.Context(), &filter, &pagingData)
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"err": err.Error(),
-			})
+			panic(err)
+		}
 
-			return
+		fmt.Println(result)
+
+		for i := range result{
+			result[i].GenUID(common.DbTypeRestaurant)
 		}
 
 		c.JSON(http.StatusOK, common.NewSuccessResponse(result, pagingData, filter))
