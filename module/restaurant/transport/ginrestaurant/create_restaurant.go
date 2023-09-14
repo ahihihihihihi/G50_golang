@@ -6,7 +6,7 @@ import (
 	restaurantbiz "G05-food-delivery/module/restaurant/biz"
 	restaurantmodel "G05-food-delivery/module/restaurant/model"
 	restaurantstorage "G05-food-delivery/module/restaurant/storage"
-	"fmt"
+	//"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )

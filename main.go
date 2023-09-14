@@ -163,6 +163,9 @@ func main() {
 
 }
 
+//change CHARACTER & COLLATE table
+//ALTER TABLE restaurants CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 //CREATE TABLE `restaurants` (
 //`id` int(11) NOT NULL AUTO_INCREMENT,
 //`owner_id` int(11) NULL,
