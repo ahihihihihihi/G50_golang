@@ -3,6 +3,8 @@ package main
 import (
 	"G05-food-delivery/component/appctx"
 	"G05-food-delivery/middleware"
+	"G05-food-delivery/module/upload/transport/ginupload"
+
 	//restaurantmodel "G05-food-delivery/module/restaurant/model"
 	"G05-food-delivery/module/restaurant/transport/ginrestaurant"
 	//"encoding/json"
@@ -66,9 +68,11 @@ func main() {
 		})
 	})
 
-
+	r.Static("/ahihi","./static")
 
 	v1 := r.Group("/v1")
+
+	v1.POST("/upload",ginupload.UploadImage(appContext))
 
 	restaurant := v1.Group("/restaurants")
 
