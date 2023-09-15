@@ -3,7 +3,9 @@ package main
 import (
 	"G05-food-delivery/component/appctx"
 	"G05-food-delivery/middleware"
+	//restaurantmodel "G05-food-delivery/module/restaurant/model"
 	"G05-food-delivery/module/restaurant/transport/ginrestaurant"
+	//"encoding/json"
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -21,6 +23,23 @@ import (
 //go get -u github.com/btcsuite/btcutil/base58
 
 func main() {
+
+	////json.Marshal & json.Unmarshal
+	//
+	//test := restaurantmodel.Restaurant{
+	//	Name: "200lab",
+	//	Addr: "somewhere",
+	//}
+	//
+	//jsByte, err := json.Marshal(test) // {"id":1,"name":"200lab","addr":"somewhere"}
+	//log.Println(string(jsByte), err)
+	//json.Unmarshal([]byte("{\"name\":\"200lab Edu\",\"addr\":\"somewhere\"}"), &test)
+	//log.Println(test)
+	//log.Println(test.Name)
+	//log.Println(test.Addr)
+
+
+
 
 	// refer https://github.com/go-sql-driver/mysql#dsn-data-source-name for details
 	//dsn := "food_delivery:19e5a718a54a9fe0559dfbce6908@tcp(127.0.0.1:3308)/food_delivery?charset=utf8mb4&parseTime=True&loc=Local"
