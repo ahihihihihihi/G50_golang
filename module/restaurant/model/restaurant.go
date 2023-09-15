@@ -22,10 +22,22 @@ type Restaurant struct {
 	//Type            RestaurantType `json:"type" gorm:"type"`
 }
 
+func (Restaurant) TableName() string {
+	return "restaurants"
+}
+
+func (r *Restaurant) Mask(isAdminOrOwner bool)  {
+	r.GenUID(common.DbTypeRestaurant)
+}
+
 type RestaurantCreate struct {
 	common.SQLModel `json:",inline"`
 	Name            string `json:"name" gorm:"column:name;"`
 	Addr            string `json:"addr" gorm:"column:addr;"`
+}
+
+func (data *RestaurantCreate) Mask(isAdminOrOwner bool)  {
+	data.GenUID(common.DbTypeRestaurant)
 }
 
 func (data *RestaurantCreate) Validate() error {
@@ -40,10 +52,6 @@ func (data *RestaurantCreate) Validate() error {
 
 func (RestaurantCreate) TableName() string {
 	return Restaurant{}.TableName()
-}
-
-func (Restaurant) TableName() string {
-	return "restaurants"
 }
 
 type RestaurantUpdate struct {

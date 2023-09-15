@@ -42,7 +42,7 @@ func ListRestaurant(appCtx appctx.AppContext) gin.HandlerFunc {
 		fmt.Println(result)
 
 		for i := range result{
-			result[i].GenUID(common.DbTypeRestaurant)
+			result[i].Mask(false)
 		}
 
 		c.JSON(http.StatusOK, common.NewSuccessResponse(result, pagingData, filter))

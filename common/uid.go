@@ -15,6 +15,8 @@ import (
 // 10 bits for Object Type
 // 18 bits for Shard ID
 
+//https://www.google.com/search?q=pinterest+mysql+sharding&rlz=1C1SQJL_enVN999VN999&oq=pinterest+shard&gs_lcrp=EgZjaHJvbWUqCAgBEAAYFhgeMgYIABBFGDkyCAgBEAAYFhgeMgoIAhAAGA8YFhge0gEJNzk2MWowajE1qAIAsAIA&sourceid=chrome&ie=UTF-8
+
 type UID struct {
 	localID uint32
 	objectType int
