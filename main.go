@@ -2,8 +2,10 @@ package main
 
 import (
 	"G05-food-delivery/component/appctx"
+	"G05-food-delivery/component/uploadprovider"
 	"G05-food-delivery/middleware"
-	"G05-food-delivery/module/upload/transport/ginupload"
+	ginupload2 "G05-food-delivery/module/upload/transport/ginupload"
+	"G05-food-delivery/module/upload/uploadtransport/ginupload"
 
 	//restaurantmodel "G05-food-delivery/module/restaurant/model"
 	"G05-food-delivery/module/restaurant/transport/ginrestaurant"
@@ -46,6 +48,14 @@ func main() {
 	// refer https://github.com/go-sql-driver/mysql#dsn-data-source-name for details
 	//dsn := "food_delivery:19e5a718a54a9fe0559dfbce6908@tcp(127.0.0.1:3308)/food_delivery?charset=utf8mb4&parseTime=True&loc=Local"
 	dsn := os.Getenv("MYSQL_CONN_STRING")
+
+	s3BucketName := os.Getenv("s3BucketName")
+	s3APIKey := os.Getenv("s3APIKey")
+	s3Region := os.Getenv("s3Region")
+	s3SecretKey := os.Getenv("s3SecretKey")
+	s3Domain := os.Getenv("s3Domain")
+
+
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	if err != nil {
@@ -55,7 +65,9 @@ func main() {
 	// debug database mode
 	db = db.Debug()
 
-	appContext := appctx.NewAppContext(db)
+	s3Provider := uploadprovider.NewS3Provider(s3BucketName,s3Region,s3APIKey,s3SecretKey,s3Domain)
+
+	appContext := appctx.NewAppContext(db,s3Provider)
 
 	r := gin.Default()
 
@@ -72,7 +84,9 @@ func main() {
 
 	v1 := r.Group("/v1")
 
-	v1.POST("/upload",ginupload.UploadImage(appContext))
+	v1.POST("/upload",ginupload.Upload(appContext))
+
+	v1.POST("/uploadlocal",ginupload2.UploadImage(appContext))
 
 	restaurant := v1.Group("/restaurants")
 

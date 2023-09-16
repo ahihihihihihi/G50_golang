@@ -9,6 +9,7 @@
 
 #ALTER TABLE restaurants CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+
 DROP TABLE IF EXISTS `carts`;
 CREATE TABLE `carts` (
   `user_id` int(11) NOT NULL,
@@ -180,7 +181,7 @@ CREATE TABLE `restaurants` (
   KEY `owner_id` (`owner_id`) USING BTREE,
   KEY `city_id` (`city_id`) USING BTREE,
   KEY `status` (`status`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `user_addresses`;
 CREATE TABLE `user_addresses` (
@@ -333,7 +334,10 @@ INSERT INTO `restaurants` (`id`, `owner_id`, `name`, `addr`, `city_id`, `lat`, `
 (3, NULL, 'Name 3', 'Address 3', NULL, NULL, NULL, NULL, NULL, 0, 1, '2023-09-14 11:13:52', '2023-09-14 11:13:52');
 INSERT INTO `restaurants` (`id`, `owner_id`, `name`, `addr`, `city_id`, `lat`, `lng`, `cover`, `logo`, `shipping_fee_per_km`, `status`, `created_at`, `updated_at`) VALUES
 (4, NULL, 'Name 4', 'Address 4', NULL, NULL, NULL, NULL, NULL, 0, 1, '2023-09-14 11:13:52', '2023-09-14 11:13:52'),
-(5, NULL, 'Name 5', 'Address 5', NULL, NULL, NULL, NULL, NULL, 0, 1, '2023-09-14 11:13:52', '2023-09-14 11:13:52');
+(5, NULL, 'Name 5', 'Address 5', NULL, NULL, NULL, NULL, NULL, 0, 1, '2023-09-14 11:13:52', '2023-09-14 11:13:52'),
+(6, NULL, 'a new restaurant rant 7', 'somewhere 7', NULL, NULL, NULL, NULL, NULL, 0, 0, '2023-09-15 11:38:18', '2023-09-15 04:43:52'),
+(7, NULL, 'a new restaurant rant 8', 'somewhere 8', NULL, NULL, NULL, NULL, '{\"id\": 0, \"url\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Pizza_Hut_classic_logo.svg/800px-Pizza_Hut_classic_logo.svg.png\", \"width\": 800, \"height\": 642}', 0, 1, '2023-09-15 16:45:54', '2023-09-15 16:45:54'),
+(8, NULL, 'a new restaurant rant 9', 'somewhere 9', NULL, NULL, NULL, '[{\"id\": 0, \"url\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Pizza_Hut_classic_logo.svg/800px-Pizza_Hut_classic_logo.svg.png\", \"width\": 800, \"height\": 642}, {\"id\": 0, \"url\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Pizza_Hut_classic_logo.svg/800px-Pizza_Hut_classic_logo.svg.png\", \"width\": 800, \"height\": 642}]', '{\"id\": 0, \"url\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Pizza_Hut_classic_logo.svg/800px-Pizza_Hut_classic_logo.svg.png\", \"width\": 800, \"height\": 642}', 0, 1, '2023-09-15 17:04:44', '2023-09-15 17:04:44');
 
 
 

@@ -1,4 +1,4 @@
-package ginupload
+package ginupload2
 
 import (
 	"G05-food-delivery/common"

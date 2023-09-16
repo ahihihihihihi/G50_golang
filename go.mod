@@ -3,6 +3,7 @@ module G05-food-delivery
 go 1.21.0
 
 require (
+	github.com/aws/aws-sdk-go v1.45.11 // indirect
 	github.com/btcsuite/btcutil v1.0.2 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.2 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
@@ -14,6 +15,7 @@ require (
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.1 // indirect
+	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/leodido/go-urn v1.2.4 // indirect
 	github.com/mattn/go-isatty v0.0.19 // indirect
