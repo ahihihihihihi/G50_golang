@@ -39,7 +39,14 @@ func (business *registerBusiness) Register(ctx context.Context, data *usermodel.
 
 	salt := common.GenSalt(50)
 
+	//log.Println("data.Password: ",data.Password)
+
+	//log.Println("salt: ",salt)
+
 	data.Password = business.hasher.Hash(data.Password + salt)
+
+	//log.Println("data.Password md5: ",data.Password)
+
 	data.Salt = salt
 	data.Role = "user" // hard code
 	//data.Status = 1
