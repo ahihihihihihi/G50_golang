@@ -7,9 +7,6 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-#ALTER TABLE restaurants CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
-
 DROP TABLE IF EXISTS `carts`;
 CREATE TABLE `carts` (
   `user_id` int(11) NOT NULL,
@@ -219,22 +216,22 @@ CREATE TABLE `user_device_tokens` (
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `email` varchar(50) NOT NULL,
-  `fb_id` varchar(50) DEFAULT NULL,
-  `gg_id` varchar(50) DEFAULT NULL,
-  `password` varchar(50) NOT NULL,
-  `salt` varchar(50) DEFAULT NULL,
-  `last_name` varchar(50) NOT NULL,
-  `first_name` varchar(50) NOT NULL,
-  `phone` varchar(20) DEFAULT NULL,
-  `role` enum('user','admin','shipper') NOT NULL DEFAULT 'user',
+  `email` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `fb_id` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `gg_id` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `password` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `salt` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `last_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `first_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `phone` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `role` enum('user','admin','shipper') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'user',
   `avatar` json DEFAULT NULL,
   `status` int(11) NOT NULL DEFAULT '1',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
 
@@ -343,6 +340,8 @@ INSERT INTO `restaurants` (`id`, `owner_id`, `name`, `addr`, `city_id`, `lat`, `
 
 
 
+INSERT INTO `users` (`id`, `email`, `fb_id`, `gg_id`, `password`, `salt`, `last_name`, `first_name`, `phone`, `role`, `avatar`, `status`, `created_at`, `updated_at`) VALUES
+(4, 'du@gmail.com', NULL, NULL, '33be1340e39a2c6dc8e26937278d90a2', 'QIXIFUHeHAFqXdIEXrTKsYXeKOYpBwHRqOWVjkVqYXsAHVXZwc', 'Con', 'Du', '', 'user', NULL, 1, '2023-09-17 16:05:02', '2023-09-17 16:05:02');
 
 
 

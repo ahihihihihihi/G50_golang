@@ -6,6 +6,7 @@ import (
 	"G05-food-delivery/middleware"
 	ginupload2 "G05-food-delivery/module/upload/transport/ginupload"
 	"G05-food-delivery/module/upload/uploadtransport/ginupload"
+	"G05-food-delivery/module/user/transport/ginuser"
 
 	//restaurantmodel "G05-food-delivery/module/restaurant/model"
 	"G05-food-delivery/module/restaurant/transport/ginrestaurant"
@@ -87,6 +88,8 @@ func main() {
 	v1.POST("/upload",ginupload.Upload(appContext))
 
 	v1.POST("/uploadlocal",ginupload2.UploadImage(appContext))
+
+	v1.POST("/register",ginuser.Register(appContext))
 
 	restaurant := v1.Group("/restaurants")
 
