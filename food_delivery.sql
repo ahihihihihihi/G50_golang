@@ -319,7 +319,15 @@ INSERT INTO `cities` (`id`, `title`, `status`, `created_at`, `updated_at`) VALUE
 
 
 
-
+INSERT INTO `restaurant_likes` (`restaurant_id`, `user_id`, `created_at`) VALUES
+(8, 8, '2023-09-18 16:52:36');
+INSERT INTO `restaurant_likes` (`restaurant_id`, `user_id`, `created_at`) VALUES
+(8, 9, '2023-09-18 16:52:36');
+INSERT INTO `restaurant_likes` (`restaurant_id`, `user_id`, `created_at`) VALUES
+(9, 9, '2023-09-18 16:52:36');
+INSERT INTO `restaurant_likes` (`restaurant_id`, `user_id`, `created_at`) VALUES
+(10, 8, '2023-09-18 17:00:36'),
+(10, 9, '2023-09-18 17:00:36');
 
 
 

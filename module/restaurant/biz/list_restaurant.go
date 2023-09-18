@@ -6,20 +6,20 @@ import (
 	"context"
 )
 
-type ListRestaurantStore interface {
-	ListDataWithCondition(context context.Context,
+type ListRestaurantRepo interface {
+	ListRestaurant(
+		context context.Context,
 		filter *restaurantmodel.Filter,
 		paging *common.Paging,
-		moreKeys ...string,
 	) ([]restaurantmodel.Restaurant, error)
 }
 
 type listRestaurantBiz struct {
-	store ListRestaurantStore
+	repo ListRestaurantRepo
 }
 
-func NewListRestaurantBiz(store ListRestaurantStore) *listRestaurantBiz {
-	return &listRestaurantBiz{store: store}
+func NewListRestaurantBiz(repo ListRestaurantRepo) *listRestaurantBiz {
+	return &listRestaurantBiz{repo: repo}
 }
 
 func (biz *listRestaurantBiz) ListRestaurant(
@@ -27,10 +27,14 @@ func (biz *listRestaurantBiz) ListRestaurant(
 	filter *restaurantmodel.Filter,
 	paging *common.Paging,
 	) ([]restaurantmodel.Restaurant, error) {
-	result,err := biz.store.ListDataWithCondition(context,filter,paging,"User")
+
+	result,err := biz.repo.ListRestaurant(context,filter,paging)
+
 	if err != nil {
-		return nil,err
+		return nil,common.ErrCannotListEntity(restaurantmodel.EntityName,err)
 	}
+
+	// list restaurants only have liked_count > 10
 
 	return result,nil
 }
