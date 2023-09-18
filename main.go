@@ -20,8 +20,6 @@ import (
 	//"strconv"
 )
 
-
-
 //go get gorm.io/gorm@v1.20.11
 //go get gorm.io/driver/mysql@v1.0.3
 //go get -u github.com/gin-gonic/gin@v1.7.1
@@ -43,9 +41,6 @@ func main() {
 	//log.Println(test.Name)
 	//log.Println(test.Addr)
 
-
-
-
 	// refer https://github.com/go-sql-driver/mysql#dsn-data-source-name for details
 	//dsn := "food_delivery:19e5a718a54a9fe0559dfbce6908@tcp(127.0.0.1:3308)/food_delivery?charset=utf8mb4&parseTime=True&loc=Local"
 	dsn := os.Getenv("MYSQL_CONN_STRING")
@@ -57,7 +52,6 @@ func main() {
 	s3Domain := os.Getenv("s3Domain")
 	secretKey := os.Getenv("SYSTEM_SECRET") // ahihi
 
-
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	if err != nil {
@@ -67,14 +61,13 @@ func main() {
 	// debug database mode
 	db = db.Debug()
 
-	s3Provider := uploadprovider.NewS3Provider(s3BucketName,s3Region,s3APIKey,s3SecretKey,s3Domain)
+	s3Provider := uploadprovider.NewS3Provider(s3BucketName, s3Region, s3APIKey, s3SecretKey, s3Domain)
 
-	appContext := appctx.NewAppContext(db,s3Provider,secretKey)
+	appContext := appctx.NewAppContext(db, s3Provider, secretKey)
 
 	r := gin.Default()
 
 	r.Use(middleware.Recover(appContext))
-
 
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
@@ -82,21 +75,21 @@ func main() {
 		})
 	})
 
-	r.Static("/ahihi","./static")
+	r.Static("/ahihi", "./static")
 
 	v1 := r.Group("/v1")
 
-	v1.POST("/upload",ginupload.Upload(appContext))
+	v1.POST("/upload", ginupload.Upload(appContext))
 
-	v1.POST("/uploadlocal",ginupload2.UploadImage(appContext))
+	v1.POST("/uploadlocal", ginupload2.UploadImage(appContext))
 
-	v1.POST("/register",ginuser.Register(appContext))
+	v1.POST("/register", ginuser.Register(appContext))
 
-	v1.POST("/authenticate",ginuser.Login(appContext))
+	v1.POST("/authenticate", ginuser.Login(appContext))
 
-	v1.GET("/profile",middleware.RequireAuth(appContext),ginuser.Profile(appContext))
+	v1.GET("/profile", middleware.RequireAuth(appContext), ginuser.Profile(appContext))
 
-	restaurant := v1.Group("/restaurants")
+	restaurant := v1.Group("/restaurants", middleware.RequireAuth(appContext))
 
 	restaurant.POST("", ginrestaurant.CreateRestaurant(appContext))
 
@@ -163,6 +156,15 @@ func main() {
 	//})
 	//
 	restaurant.DELETE("/:id", ginrestaurant.DeleteRestaurant(appContext))
+
+	admin := v1.Group("/admin",
+		middleware.RequireAuth(appContext),
+		middleware.RoleRequired(appContext, "admin", ",mod"),
+	)
+
+	{
+		admin.GET("/profile", ginuser.Profile(appContext))
+	}
 
 	r.Run()
 

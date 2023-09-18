@@ -162,7 +162,7 @@ CREATE TABLE `restaurant_ratings` (
 DROP TABLE IF EXISTS `restaurants`;
 CREATE TABLE `restaurants` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `owner_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
   `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `addr` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `city_id` int(11) DEFAULT NULL,
@@ -175,10 +175,10 @@ CREATE TABLE `restaurants` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  KEY `owner_id` (`owner_id`) USING BTREE,
+  KEY `owner_id` (`user_id`) USING BTREE,
   KEY `city_id` (`city_id`) USING BTREE,
   KEY `status` (`status`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `user_addresses`;
 CREATE TABLE `user_addresses` (
@@ -231,7 +231,7 @@ CREATE TABLE `users` (
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
 
@@ -323,28 +323,31 @@ INSERT INTO `cities` (`id`, `title`, `status`, `created_at`, `updated_at`) VALUE
 
 
 
-INSERT INTO `restaurants` (`id`, `owner_id`, `name`, `addr`, `city_id`, `lat`, `lng`, `cover`, `logo`, `shipping_fee_per_km`, `status`, `created_at`, `updated_at`) VALUES
+INSERT INTO `restaurants` (`id`, `user_id`, `name`, `addr`, `city_id`, `lat`, `lng`, `cover`, `logo`, `shipping_fee_per_km`, `status`, `created_at`, `updated_at`) VALUES
 (1, NULL, 'Name 1', 'Address 1', NULL, NULL, NULL, NULL, NULL, 0, 1, '2023-09-14 11:13:52', '2023-09-14 11:13:52');
-INSERT INTO `restaurants` (`id`, `owner_id`, `name`, `addr`, `city_id`, `lat`, `lng`, `cover`, `logo`, `shipping_fee_per_km`, `status`, `created_at`, `updated_at`) VALUES
+INSERT INTO `restaurants` (`id`, `user_id`, `name`, `addr`, `city_id`, `lat`, `lng`, `cover`, `logo`, `shipping_fee_per_km`, `status`, `created_at`, `updated_at`) VALUES
 (2, NULL, 'Name 2', 'Address 2', NULL, NULL, NULL, NULL, NULL, 0, 1, '2023-09-14 11:13:52', '2023-09-14 11:13:52');
-INSERT INTO `restaurants` (`id`, `owner_id`, `name`, `addr`, `city_id`, `lat`, `lng`, `cover`, `logo`, `shipping_fee_per_km`, `status`, `created_at`, `updated_at`) VALUES
+INSERT INTO `restaurants` (`id`, `user_id`, `name`, `addr`, `city_id`, `lat`, `lng`, `cover`, `logo`, `shipping_fee_per_km`, `status`, `created_at`, `updated_at`) VALUES
 (3, NULL, 'Name 3', 'Address 3', NULL, NULL, NULL, NULL, NULL, 0, 1, '2023-09-14 11:13:52', '2023-09-14 11:13:52');
-INSERT INTO `restaurants` (`id`, `owner_id`, `name`, `addr`, `city_id`, `lat`, `lng`, `cover`, `logo`, `shipping_fee_per_km`, `status`, `created_at`, `updated_at`) VALUES
+INSERT INTO `restaurants` (`id`, `user_id`, `name`, `addr`, `city_id`, `lat`, `lng`, `cover`, `logo`, `shipping_fee_per_km`, `status`, `created_at`, `updated_at`) VALUES
 (4, NULL, 'Name 4', 'Address 4', NULL, NULL, NULL, NULL, NULL, 0, 1, '2023-09-14 11:13:52', '2023-09-14 11:13:52'),
 (5, NULL, 'Name 5', 'Address 5', NULL, NULL, NULL, NULL, NULL, 0, 1, '2023-09-14 11:13:52', '2023-09-14 11:13:52'),
 (6, NULL, 'a new restaurant rant 7', 'somewhere 7', NULL, NULL, NULL, NULL, NULL, 0, 0, '2023-09-15 11:38:18', '2023-09-15 04:43:52'),
 (7, NULL, 'a new restaurant rant 8', 'somewhere 8', NULL, NULL, NULL, NULL, '{\"id\": 0, \"url\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Pizza_Hut_classic_logo.svg/800px-Pizza_Hut_classic_logo.svg.png\", \"width\": 800, \"height\": 642}', 0, 1, '2023-09-15 16:45:54', '2023-09-15 16:45:54'),
-(8, NULL, 'a new restaurant rant 9', 'somewhere 9', NULL, NULL, NULL, '[{\"id\": 0, \"url\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Pizza_Hut_classic_logo.svg/800px-Pizza_Hut_classic_logo.svg.png\", \"width\": 800, \"height\": 642}, {\"id\": 0, \"url\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Pizza_Hut_classic_logo.svg/800px-Pizza_Hut_classic_logo.svg.png\", \"width\": 800, \"height\": 642}]', '{\"id\": 0, \"url\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Pizza_Hut_classic_logo.svg/800px-Pizza_Hut_classic_logo.svg.png\", \"width\": 800, \"height\": 642}', 0, 1, '2023-09-15 17:04:44', '2023-09-15 17:04:44');
+(8, NULL, 'a new restaurant rant 9', 'somewhere 9', NULL, NULL, NULL, '[{\"id\": 0, \"url\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Pizza_Hut_classic_logo.svg/800px-Pizza_Hut_classic_logo.svg.png\", \"width\": 800, \"height\": 642}, {\"id\": 0, \"url\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Pizza_Hut_classic_logo.svg/800px-Pizza_Hut_classic_logo.svg.png\", \"width\": 800, \"height\": 642}]', '{\"id\": 0, \"url\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Pizza_Hut_classic_logo.svg/800px-Pizza_Hut_classic_logo.svg.png\", \"width\": 800, \"height\": 642}', 0, 1, '2023-09-15 17:04:44', '2023-09-15 17:04:44'),
+(9, 8, 'a new restaurant rant 10', 'somewhere 10', NULL, NULL, NULL, '[{\"id\": 0, \"url\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Pizza_Hut_classic_logo.svg/800px-Pizza_Hut_classic_logo.svg.png\", \"width\": 800, \"height\": 642}, {\"id\": 0, \"url\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Pizza_Hut_classic_logo.svg/800px-Pizza_Hut_classic_logo.svg.png\", \"width\": 800, \"height\": 642}]', '{\"id\": 0, \"url\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Pizza_Hut_classic_logo.svg/800px-Pizza_Hut_classic_logo.svg.png\", \"width\": 800, \"height\": 642}', 0, 1, '2023-09-18 14:45:25', '2023-09-18 14:45:25'),
+(10, 9, 'a new restaurant rant 11', 'somewhere 11', NULL, NULL, NULL, NULL, NULL, 0, 1, '2023-09-18 16:17:06', '2023-09-18 09:18:53');
 
 
 
 
 
 INSERT INTO `users` (`id`, `email`, `fb_id`, `gg_id`, `password`, `salt`, `last_name`, `first_name`, `phone`, `role`, `avatar`, `status`, `created_at`, `updated_at`) VALUES
-(8, 'du@gmail.com', NULL, NULL, '13861f685d70ee605162ac912f21bf08', 'QuRFwwFaqSgsQUFsFZobgrrXpDZUDsoLUZXCKaXXDUuEGMTpNh', 'Con', 'Du', '', 'user', NULL, 1, '2023-09-18 00:43:26', '2023-09-18 00:43:26');
+(8, 'du@gmail.com', NULL, NULL, '13861f685d70ee605162ac912f21bf08', 'QuRFwwFaqSgsQUFsFZobgrrXpDZUDsoLUZXCKaXXDUuEGMTpNh', 'Con', 'Du', '', 'admin', NULL, 1, '2023-09-18 00:43:26', '2023-09-18 09:51:01');
 INSERT INTO `users` (`id`, `email`, `fb_id`, `gg_id`, `password`, `salt`, `last_name`, `first_name`, `phone`, `role`, `avatar`, `status`, `created_at`, `updated_at`) VALUES
 (9, 'du2@gmail.com', NULL, NULL, '73822f0ebdf18ec506014aa2a54dd1be', 'LwMfZclNjFAYZAQZMTbSbnqVlsNXrKGIslrAKTTvpmIMnpsOtj', 'Con', 'Du', '', 'user', NULL, 1, '2023-09-18 00:45:35', '2023-09-18 00:45:35');
-
+INSERT INTO `users` (`id`, `email`, `fb_id`, `gg_id`, `password`, `salt`, `last_name`, `first_name`, `phone`, `role`, `avatar`, `status`, `created_at`, `updated_at`) VALUES
+(10, 'du3@gmail.com', NULL, NULL, 'a30fb5ea8e275ffaa216b215afa542b5', 'ARwheOeeBXXXNtXuWoEZGtPPtOjhubkXnXomNlplNtLXMrWUNa', 'Con', 'Du', '', 'user', NULL, 1, '2023-09-18 17:11:41', '2023-09-18 17:11:41');
 
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;

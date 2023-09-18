@@ -11,6 +11,12 @@ const (
 	CurrentUser = "user"
 )
 
+type Requester interface {
+	GetUserId() int
+	GetEmail() string
+	GetRole() string
+}
+
 func AppRecover() {
 	if r := recover(); r != nil {
 		fmt.Println("<------------------------------------------------")
