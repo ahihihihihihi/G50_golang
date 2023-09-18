@@ -94,6 +94,8 @@ func main() {
 
 	v1.POST("/authenticate",ginuser.Login(appContext))
 
+	v1.GET("/profile",middleware.RequireAuth(appContext),ginuser.Profile(appContext))
+
 	restaurant := v1.Group("/restaurants")
 
 	restaurant.POST("", ginrestaurant.CreateRestaurant(appContext))

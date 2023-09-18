@@ -7,6 +7,10 @@ const (
 	DbTypeUser = 2
 )
 
+const (
+	CurrentUser = "user"
+)
+
 func AppRecover() {
 	if r := recover(); r != nil {
 		fmt.Println("<------------------------------------------------")
